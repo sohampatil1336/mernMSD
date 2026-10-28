@@ -1,0 +1,25 @@
+{
+  "name": "exp-12-appln-that-demonstrates-mongodb",
+  "version": "1.0.0",
+  "description": "Experiment 12: Application that Demonstrates MongoDB and Mongoose CRUD Operations",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:cli": "node crud-demo.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.3.1",
+    "cors": "^2.8.5"
+  },
+  "keywords": [
+    "mongodb",
+    "mongoose",
+    "crud",
+    "nosql",
+    "express",
+    "mern"
+  ],
+  "author": "Anuj Arun Powar",
+  "license": "ISC"
+}

@@ -1,0 +1,131 @@
+/* ==========================================================================
+   DYPCET CSE Department - Global Styles & Print Optimization
+   ========================================================================== */
+
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/merriweather/400.css';
+@import '@fontsource/merriweather/700.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom modern scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0b2850;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1c437a;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   PRINT STYLESHEET (Audit & Accreditation Documentation)
+   Optimized for physical printing & PDF generation of About, Faculty, Placements
+   ========================================================================== */
+@media print {
+  /* Hide non-printable elements like navigation bars, buttons, and footers */
+  header,
+  nav,
+  footer,
+  .MuiAppBar-root,
+  .MuiDrawer-root,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+  }
+
+  #main-content {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Institutional Print Header */
+  #main-content::before {
+    content: "D. Y. Patil College of Engineering and Technology, Kolhapur (Autonomous) | Department of Computer Science & Engineering | NBA Accredited, NAAC 'A' Grade";
+    display: block;
+    font-size: 9pt;
+    font-weight: bold;
+    border-bottom: 2px solid #000000;
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  /* Ensure cards and tables print cleanly with borders */
+  .MuiCard-root,
+  .MuiPaper-root {
+    box-shadow: none !important;
+    border: 1px solid #cccccc !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .MuiTable-root {
+    border-collapse: collapse !important;
+    width: 100% !important;
+  }
+
+  .MuiTableCell-root {
+    border: 1px solid #dddddd !important;
+    padding: 6px 10px !important;
+    color: #000000 !important;
+  }
+
+  .MuiTableHead-root .MuiTableCell-root {
+    background-color: #f2f2f2 !important;
+    color: #000000 !important;
+    font-weight: bold !important;
+  }
+
+  a {
+    text-decoration: none !important;
+    color: #000000 !important;
+  }
+
+  /* Page break rules for sections */
+  section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
+}

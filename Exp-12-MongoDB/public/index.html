@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiment 12: MongoDB CRUD Application</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 30px 15px;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    header {
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      border: 1px solid #334155;
+      text-align: center;
+    }
+    h1 { color: #38bdf8; font-size: 24px; margin-bottom: 6px; }
+    .subtitle { color: #94a3b8; font-size: 14px; }
+    .grid {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 25px;
+    }
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+    }
+    .card h2 { font-size: 18px; color: #f1f5f9; margin-bottom: 15px; border-bottom: 1px solid #334155; padding-bottom: 8px; }
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 12px; color: #cbd5e1; margin-bottom: 4px; font-weight: 600; }
+    input {
+      width: 100%;
+      padding: 9px;
+      border: 1px solid #475569;
+      border-radius: 6px;
+      background: #0f172a;
+      color: white;
+      font-size: 13px;
+    }
+    input:focus { outline: none; border-color: #38bdf8; }
+    .btn {
+      width: 100%;
+      padding: 10px;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: opacity 0.2s;
+      margin-top: 5px;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-create { background: #10b981; color: white; }
+    .btn-update { background: #3b82f6; color: white; margin-top: 5px; }
+    .btn-danger { background: #ef4444; color: white; padding: 4px 8px; font-size: 12px; width: auto; border-radius: 4px; }
+    .btn-edit { background: #0284c7; color: white; padding: 4px 8px; font-size: 12px; width: auto; border-radius: 4px; margin-right: 4px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 13px;
+      border-bottom: 1px solid #334155;
+    }
+    th { color: #94a3b8; font-weight: 600; background: #0f172a; }
+    tr:hover { background: #1e293b; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      background: #0284c7;
+    }
+    .status-msg {
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 12px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Experiment 12: MongoDB CRUD Application</h1>
+      <p class="subtitle">Student: Anuj Arun Powar | Roll No: 13 | DYPCET Kolhapur</p>
+    </header>
+
+    <div class="grid">
+      <!-- FORM (CREATE / UPDATE) -->
+      <div class="card">
+        <h2 id="formTitle">Add New Student Record</h2>
+        <div id="statusAlert" class="status-msg"></div>
+        <form id="studentForm" onsubmit="handleFormSubmit(event)">
+          <div class="form-group">
+            <label>Roll Number</label>
+            <input type="number" id="rollNo" required placeholder="e.g. 13" />
+          </div>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="name" required placeholder="e.g. Anuj Arun Powar" />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="email" required placeholder="e.g. anuj@dypcet.edu" />
+          </div>
+          <div class="form-group">
+            <label>Branch</label>
+            <input type="text" id="branch" value="Computer Science & Engineering" />
+          </div>
+          <div class="form-group">
+            <label>Marks (%)</label>
+            <input type="number" id="marks" min="0" max="100" value="95" />
+          </div>
+          <button type="submit" id="submitBtn" class="btn btn-create">Create Student (INSERT)</button>
+          <button type="button" id="cancelBtn" onclick="resetForm()" class="btn" style="background:#475569; display:none; margin-top:5px;">Cancel Edit</button>
+        </form>
+      </div>
+
+      <!-- TABLE (READ / DELETE) -->
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <h2>Student Records in MongoDB</h2>
+          <button onclick="loadStudents()" style="padding:4px 10px; background:#334155; color:white; border:none; border-radius:4px; cursor:pointer; font-size:12px;">🔄 Refresh</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Roll</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Marks</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody">
+              <tr><td colspan="5" style="text-align:center; color:#94a3b8;">Loading records...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isEditing = false;
+
+    async function loadStudents() {
+      const tbody = document.getElementById("studentTableBody");
+      try {
+        const res = await fetch("/api/students");
+        const json = await res.json();
+        const list = json.data || [];
+
+        if (list.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#94a3b8;">No records found. Add a student using the form!</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = list.map(s => `
+          <tr>
+            <td><span class="badge">${s.rollNo}</span></td>
+            <td><strong>${s.name}</strong></td>
+            <td>${s.email}</td>
+            <td>${s.marks}%</td>
+            <td>
+              <button class="btn-edit" onclick='startEdit(${JSON.stringify(s)})'>Edit</button>
+              <button class="btn-danger" onclick='deleteStudent(${s.rollNo})'>Delete</button>
+            </td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" style="color:#ef4444;">Error: ${err.message}</td></tr>`;
+      }
+    }
+
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      const rollNo = document.getElementById("rollNo").value;
+      const payload = {
+        rollNo: Number(rollNo),
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        branch: document.getElementById("branch").value,
+        marks: Number(document.getElementById("marks").value),
+      };
+
+      try {
+        const url = isEditing ? `/api/students/${rollNo}` : "/api/students";
+        const method = isEditing ? "PUT" : "POST";
+
+        const res = await fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          showMsg(data.message || "Operation successful!", "#10b981");
+          resetForm();
+          loadStudents();
+        } else {
+          showMsg(data.message || "Failed to save", "#ef4444");
+        }
+      } catch (err) {
+        showMsg(err.message, "#ef4444");
+      }
+    }
+
+    function startEdit(s) {
+      isEditing = true;
+      document.getElementById("formTitle").innerText = `Edit Student (Roll No: ${s.rollNo})`;
+      document.getElementById("rollNo").value = s.rollNo;
+      document.getElementById("rollNo").disabled = true;
+      document.getElementById("name").value = s.name;
+      document.getElementById("email").value = s.email;
+      document.getElementById("branch").value = s.branch;
+      document.getElementById("marks").value = s.marks;
+
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.innerText = "Update Student (PUT)";
+      submitBtn.className = "btn btn-update";
+      document.getElementById("cancelBtn").style.display = "block";
+    }
+
+    function resetForm() {
+      isEditing = false;
+      document.getElementById("studentForm").reset();
+      document.getElementById("rollNo").disabled = false;
+      document.getElementById("formTitle").innerText = "Add New Student Record";
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.innerText = "Create Student (INSERT)";
+      submitBtn.className = "btn btn-create";
+      document.getElementById("cancelBtn").style.display = "none";
+    }
+
+    async function deleteStudent(rollNo) {
+      if (!confirm(`Are you sure you want to delete student with Roll No ${rollNo}?`)) return;
+      try {
+        const res = await fetch(`/api/students/${rollNo}`, { method: "DELETE" });
+        const data = await res.json();
+        showMsg(data.message || "Deleted successfully!", "#ef4444");
+        loadStudents();
+      } catch (err) {
+        showMsg(err.message, "#ef4444");
+      }
+    }
+
+    function showMsg(msg, color) {
+      const alert = document.getElementById("statusAlert");
+      alert.style.display = "block";
+      alert.style.background = color + "22";
+      alert.style.border = "1px solid " + color;
+      alert.style.color = color;
+      alert.innerText = msg;
+      setTimeout(() => alert.style.display = "none", 4000);
+    }
+
+    // Initial load
+    loadStudents();
+  </script>
+</body>
+</html>
