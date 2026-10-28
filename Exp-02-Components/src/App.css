@@ -1,0 +1,173 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f1f5f9;
+  color: #1e293b;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 30px;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  color: #0f172a;
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 15px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 25px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.column-header {
+  padding: 16px 20px;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+}
+
+.class-header {
+  background: linear-gradient(135deg, #1e40af, #3b82f6);
+}
+
+.function-header {
+  background: linear-gradient(135deg, #065f46, #10b981);
+}
+
+.column-header h2 {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.column-header p {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  border: 1px solid #e2e8f0;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.class-card {
+  border-left: 5px solid #3b82f6;
+}
+
+.function-card {
+  border-left: 5px solid #10b981;
+}
+
+.card h3 {
+  font-size: 16px;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.highlight {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0284c7;
+}
+
+code {
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #d97706;
+}
+
+.count-display {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.count-display span {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn-green {
+  background-color: #10b981;
+  color: white;
+}
+
+.btn-red {
+  background-color: #ef4444;
+  color: white;
+}
+
+.btn-gray {
+  background-color: #64748b;
+  color: white;
+}
+
+.btn-blue {
+  background-color: #3b82f6;
+  color: white;
+}

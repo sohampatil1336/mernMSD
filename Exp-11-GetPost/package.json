@@ -1,0 +1,22 @@
+{
+  "name": "exp-11-expressjs-get-and-post",
+  "version": "1.0.0",
+  "description": "Experiment 11: ExpressJS GET and POST Methods Demonstration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "keywords": [
+    "express",
+    "get",
+    "post",
+    "form-handling",
+    "query-params",
+    "body-parser"
+  ],
+  "author": "Anuj Arun Powar",
+  "license": "ISC"
+}

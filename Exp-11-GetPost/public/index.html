@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Experiment 11: ExpressJS GET & POST Methods</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      padding: 30px 15px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+    h1 { color: #0f172a; font-size: 26px; margin-bottom: 6px; }
+    .subtitle { color: #64748b; font-size: 14px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 25px;
+      margin-bottom: 25px;
+    }
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      border-top: 5px solid #0284c7;
+    }
+    .card.post-card { border-top-color: #10b981; }
+    .card.json-card { border-top-color: #8b5cf6; }
+    h2 { font-size: 18px; margin-bottom: 12px; }
+    p.desc { font-size: 13px; color: #64748b; margin-bottom: 15px; }
+    .form-group {
+      margin-bottom: 14px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 4px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #0284c7;
+    }
+    .btn {
+      width: 100%;
+      padding: 11px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .btn-get { background: #0284c7; }
+    .btn-post { background: #10b981; }
+    .btn-json { background: #8b5cf6; }
+    .output-box {
+      background: #0f172a;
+      color: #34d399;
+      padding: 15px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      min-height: 80px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Experiment 11: ExpressJS GET & POST Methods</h1>
+      <p class="subtitle">Student: Anuj Arun Powar | Roll No: 13 | DYPCET Kolhapur</p>
+    </header>
+
+    <div class="grid">
+      <!-- 1. GET METHOD FORM -->
+      <div class="card">
+        <h2>1. GET Method Form</h2>
+        <p class="desc">Data is visible in the URL bar as query parameters (ideal for searches & non-sensitive fetches).</p>
+        <form method="GET" action="/submit-get">
+          <div class="form-group">
+            <label>Search Keyword</label>
+            <input type="text" name="searchKey" placeholder="e.g. React, Node, Express" required />
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select name="filterCategory">
+              <option value="Tutorials">Tutorials</option>
+              <option value="Practicals">Practicals</option>
+              <option value="Projects">Projects</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-get">Submit via HTTP GET</button>
+        </form>
+      </div>
+
+      <!-- 2. POST METHOD FORM -->
+      <div class="card post-card">
+        <h2>2. POST Method Form (URL-Encoded)</h2>
+        <p class="desc">Data is securely transmitted in the HTTP request body (ideal for registrations & logins).</p>
+        <form method="POST" action="/submit-post">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="username" placeholder="Anuj Arun Powar" required />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="anuj@example.com" required />
+          </div>
+          <div class="form-group">
+            <label>Age</label>
+            <input type="number" name="age" placeholder="21" required />
+          </div>
+          <button type="submit" class="btn btn-post">Submit via HTTP POST</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 3. AJAX JSON POST TESTER -->
+    <div class="card json-card">
+      <h2>3. Asynchronous POST (JSON Payload via Fetch API)</h2>
+      <p class="desc">Sends raw JSON payload directly to <code>/api/register</code> and dynamically displays the Express server response.</p>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 10px;">
+        <input type="text" id="ajaxName" placeholder="Username" value="Anuj Powar" />
+        <input type="email" id="ajaxEmail" placeholder="Email" value="anuj13@dypgroup.edu.in" />
+        <input type="number" id="ajaxAge" placeholder="Age" value="21" />
+        <input type="text" id="ajaxBranch" placeholder="Branch" value="CSE" />
+      </div>
+      <button onclick="sendAjaxPost()" class="btn btn-json">Send JSON POST Request</button>
+
+      <div id="jsonOutput" class="output-box">API response will appear here...</div>
+    </div>
+  </div>
+
+  <script>
+    async function sendAjaxPost() {
+      const output = document.getElementById("jsonOutput");
+      output.innerText = "Sending POST request...";
+      const payload = {
+        username: document.getElementById("ajaxName").value,
+        email: document.getElementById("ajaxEmail").value,
+        age: document.getElementById("ajaxAge").value,
+        branch: document.getElementById("ajaxBranch").value,
+      };
+
+      try {
+        const res = await fetch("/api/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        output.innerText = JSON.stringify(data, null, 2);
+      } catch (err) {
+        output.innerText = "Error: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>

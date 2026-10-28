@@ -1,0 +1,13 @@
+{
+  "name": "exp-01-mern-starter-demo",
+  "version": "1.0.0",
+  "description": "Experiment 1: MERN Stack Architecture Verification Demo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5"
+  }
+}

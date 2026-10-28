@@ -1,0 +1,14 @@
+.card {
+  width: 60%;
+  margin: 15px auto;
+  padding: 15px;
+  background-color: lavender;
+  border: 2px solid purple;
+  border-radius: 8px;
+}
+
+.title {
+  color: purple;
+  font-weight: bold;
+}
+
