@@ -1,0 +1,18 @@
+{
+  "name": "exp-06-console-and-web-based-nodejs-appln",
+  "version": "1.0.0",
+  "description": "Experiment 6: Console and Web Based Node.js Application",
+  "main": "console-app.js",
+  "scripts": {
+    "start:console": "node console-app.js",
+    "start:web": "node web-app.js"
+  },
+  "keywords": [
+    "nodejs",
+    "console",
+    "http",
+    "web-server"
+  ],
+  "author": "Anuj Arun Powar",
+  "license": "ISC"
+}

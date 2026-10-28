@@ -1,0 +1,19 @@
+{
+  "name": "exp-07-nodejs-events-event-loop-and-its-role",
+  "version": "1.0.0",
+  "description": "Experiment 7: Node.js Events, Event Loop and its Role",
+  "main": "events-demo.js",
+  "scripts": {
+    "start:events": "node events-demo.js",
+    "start:loop": "node event-loop-demo.js"
+  },
+  "keywords": [
+    "nodejs",
+    "events",
+    "eventemitter",
+    "eventloop",
+    "libuv"
+  ],
+  "author": "Anuj Arun Powar",
+  "license": "ISC"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "exp-08-demonstrating-nodejs-file-system",
+  "version": "1.0.0",
+  "description": "Experiment 8: Demonstrating Node.js File System and Process Object",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "fs",
+    "filesystem",
+    "process"
+  ],
+  "author": "Anuj Arun Powar",
+  "license": "ISC"
+}
